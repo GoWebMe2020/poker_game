@@ -13,4 +13,7 @@
 - Checks that there are no duplicates in the hand.
 - Check if hand is a flush.
 - Check for a straight.
-- check for a stright flush
+- Check for a stright flush.
+- Check for a four of a kind.
+- Check for three of a kind.
+- Check for a pair.
