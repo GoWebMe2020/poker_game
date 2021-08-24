@@ -7,7 +7,7 @@ class PokerGame < Sinatra::Base
   end
 
   get '/' do
-    'Hello World'
+    'Poker'
   end
 
   run! if app_file == $0
