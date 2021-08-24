@@ -13,6 +13,8 @@ class PokerHandRank
       @poker_hand_outcome = 'Straight'
     elsif is_four_of_a_kind?(current_hand)
       @poker_hand_outcome = 'Four of a Kind'
+    elsif is_a_full_house(current_hand)
+      @poker_hand_outcome = 'Full House'
     elsif is_three_of_a_kind?(current_hand)
       @poker_hand_outcome = 'Three of a Kind'
     elsif is_two_of_a_pair?(current_hand)
@@ -31,20 +33,23 @@ class PokerHandRank
   end
 
   def is_a_straight?(current_hand)
-    card_values = current_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
+    numbered_hand = convert_card_values(current_hand)
+    card_values = numbered_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
     card_values.sort!.each_cons(2).all? {|first, second| second == first + 1}
   end
   
   def is_four_of_a_kind?(current_hand)
-    card_values = current_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
+    numbered_hand = convert_card_values(current_hand)
+    card_values = numbered_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
     four_of_a_kind = card_values.detect{ |value| card_values.count(value) === 4}
-    four_of_a_kind != nil
+    four_of_a_kind != nil && !is_a_full_house(current_hand)
   end
 
   def is_three_of_a_kind?(current_hand)
-    card_values = current_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
+    numbered_hand = convert_card_values(current_hand)
+    card_values = numbered_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
     three_of_a_kind = card_values.detect{ |value| card_values.count(value) === 3}
-    three_of_a_kind != nil && !is_four_of_a_kind?(current_hand) ? true : false
+    three_of_a_kind != nil ? true : false
   end
 
   def is_a_straight_flush?(current_hand)
@@ -52,13 +57,39 @@ class PokerHandRank
   end
 
   def is_two_of_a_pair?(current_hand)
-    card_values = current_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
+    numbered_hand = convert_card_values(current_hand)
+    card_values = numbered_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
     card_values.uniq.length === 3
   end
 
   def is_a_pair?(current_hand)
-    card_values = current_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
+    numbered_hand = convert_card_values(current_hand)
+    card_values = numbered_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
     card_values.uniq.length === 4
+  end
+
+  def is_a_full_house(current_hand)
+    if (is_a_pair?(current_hand)) && (is_three_of_a_kind?(current_hand))
+      true
+    else
+      false
+    end
+  end
+
+  def convert_card_values(cards)
+    cards.map do |value|
+      if value[0] == 'J'
+        value[0] = '11'
+      elsif value[0] == 'Q'
+        value[0] = '12'
+      elsif value[0] == 'K'
+        value[0] = '13'
+      elsif value[0] == 'A'
+        value[0] = '14'
+      else
+        value
+      end
+    end
   end
 
 end
