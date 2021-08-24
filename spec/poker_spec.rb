@@ -6,4 +6,10 @@ describe Poker do
     expect(@poker).to be_an_instance_of(Poker)
   end
 
+  it 'can draw a hand of 5 cards from the deck' do
+    @poker = Poker.new
+    @poker.draw
+    expect(@poker.hand.length).to eq(5)
+  end
+
 end
