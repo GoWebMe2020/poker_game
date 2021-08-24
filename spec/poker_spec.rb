@@ -20,4 +20,9 @@ describe Poker do
     expect(@poker.hand.uniq.length).to eq(5)
   end
 
+  it 'returns true if the hand is a straight' do
+    @hand = ['2S', '5S', 'JS', '4S', '10S']
+    expect(@poker.is_a_flush?(@hand)).to eq(true)
+  end
+
 end

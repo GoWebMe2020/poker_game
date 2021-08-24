@@ -16,6 +16,12 @@ class Poker
     @hand
   end
 
+  def is_a_flush?(current_hand)
+    suites = current_hand.map { |card| card[-1] }
+    return false if suites.uniq.length > 1
+    true
+  end
+
   private
 
   def check_for_duplicate_card(poker_deck, poker_hand, random_card)
