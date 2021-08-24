@@ -12,4 +12,10 @@ describe Poker do
     expect(@poker.hand.length).to eq(5)
   end
 
+  it 'can determine if there are duplicate cards' do
+    @poker = Poker.new
+    @poker.draw
+    expect(@poker.hand.uniq.length).to eq(5)
+  end
+
 end
