@@ -61,15 +61,27 @@ describe PokerHandRank do
     expect(@poker_hand_rank.is_three_of_a_kind?(@hand)).to eq(false)
   end
 
-  it 'returns true if the hand is a two pair' do
+  it 'returns true if the hand is a pair' do
     @poker_hand_rank = PokerHandRank.new
     @hand = ['7S', '7D', '5H', '4C', '9S']
     expect(@poker_hand_rank.is_a_pair?(@hand)).to eq(true)
   end
 
-  it 'returns false if the hand is not a two pair' do
+  it 'returns false if the hand is not a pair' do
     @poker_hand_rank = PokerHandRank.new
     @hand = ['7S', '7D', '7H', '4C', '9S']
     expect(@poker_hand_rank.is_a_pair?(@hand)).to eq(false)
+  end
+
+  it 'returns true if the hand is a two pair' do
+    @poker_hand_rank = PokerHandRank.new
+    @hand = ['7S', '7D', '10H', '10C', '9S']
+    expect(@poker_hand_rank.is_two_of_a_pair?(@hand)).to eq(true)
+  end
+
+  it 'returns false if the hand is a not two pair' do
+    @poker_hand_rank = PokerHandRank.new
+    @hand = ['7S', '7D', '10H', '8C', '9S']
+    expect(@poker_hand_rank.is_two_of_a_pair?(@hand)).to eq(false)
   end
 end

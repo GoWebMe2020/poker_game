@@ -25,6 +25,11 @@ class PokerHandRank
     is_a_straight?(current_hand) && is_a_flush?(current_hand)
   end
 
+  def is_two_of_a_pair?(current_hand)
+    card_values = current_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
+    card_values.uniq.length == 3
+  end
+
   def is_a_pair?(current_hand)
     card_values = current_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
     card_values.uniq.length === 4
