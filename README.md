@@ -12,3 +12,5 @@
 - Can draw a hand of 5 cards.
 - Checks that there are no duplicates in the hand.
 - Check if hand is a flush.
+- Check for a straight.
+- check for a stright flush
