@@ -2,18 +2,18 @@ class Poker
 
   attr_accessor :hand
 
-  def initialize(cards = Cards.new)
+  def initialize(cards = Cards.new, hand_rank = PokerHandRank.new)
     @deck = cards.create_deck
-    @hand = []
   end
 
   def draw
     @deck.shuffle!
+    @hand = []
     while @hand.length < 5 do
       card = @deck.sample
       check_for_duplicate_card(@deck, @hand, card)
     end
-    @hand
+    @current_hand =  @hand.join(",").gsub(/\,/,' ')
   end
 
   private

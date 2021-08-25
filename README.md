@@ -17,4 +17,6 @@
 - Check for a four of a kind.
 - Check for three of a kind.
 - Check for a pair.
-- Check for a two pair
+- Check for a two pair.
+- Checki for a full house.
+- Check for a royal flush

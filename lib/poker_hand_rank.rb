@@ -1,106 +1,92 @@
 class PokerHandRank
-
   def initialize
-    @poker_hand_outcome = ''
+    @rank = ""
   end
 
-  def poker_hand_rank(current_hand)
-    if is_a_royal_flush(current_hand)
-      @poker_hand_outcome = 'Royal Flush'
-    elsif is_a_straight_flush?(current_hand)
-      @poker_hand_outcome = 'Straight Flush'
-    elsif is_a_flush?(current_hand)
-      @poker_hand_outcome = 'Flush'
-    elsif is_a_straight?(current_hand)
-      @poker_hand_outcome = 'Straight'
-    elsif is_four_of_a_kind?(current_hand)
-      @poker_hand_outcome = 'Four of a Kind'
-    elsif is_a_full_house?(current_hand)
-      @poker_hand_outcome = 'Full House'
-    elsif is_three_of_a_kind?(current_hand)
-      @poker_hand_outcome = 'Three of a Kind'
-    elsif is_two_of_a_pair?(current_hand)
-      @poker_hand_outcome = 'Two Pair'
-    elsif is_a_pair?(current_hand)
-      @poker_hand_outcome = 'A Pair'
+  def rank_hand(current_hand)
+    if (is_a_flush(current_hand) && is_a_straight(current_hand) && highest_card_value(current_hand) === 14)
+      @rank = "Royal Flush"
+    elsif (is_a_flush(current_hand) && is_a_straight(current_hand))
+      @rank = "Straight Flush"
+    elsif duplicates(current_hand).uniq[0] === 4
+      @rank = "Four of a Kind"
+    elsif (duplicates(current_hand).uniq[0] === 3 && duplicates(current_hand).uniq[1] === 2)
+      @rank = "Full House"
+    elsif is_a_flush(current_hand)
+      @rank = "Flush"
+    elsif is_a_straight(current_hand)
+      @rank = "Straight"
+    elsif duplicates(current_hand)[0] === 3
+      @rank = "Three of a Kind"
+    elsif duplicates(current_hand).count(2) === 4
+      @rank = "Two Pair"
+    elsif duplicates(current_hand).count(2) === 2
+      @rank = "Pair"
     else
-      @poker_hand_outcome = 'High Card'
+      @rank = "High Card"
     end
+    p @rank
   end
 
-  def is_a_flush?(current_hand)
-    suites = current_hand.map { |card| card[-1] }
-    return false if suites.uniq.length > 1
-    true
+  def is_a_flush(current_hand)
+    suites = card_suites(current_hand)
+    suites[0] === suites[4]
   end
 
-  def is_a_straight?(current_hand)
-    numbered_hand = convert_card_values(current_hand)
-    card_values = numbered_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
-    card_values.sort!.each_cons(2).all? {|first, second| second == first + 1}
-  end
-  
-  def is_four_of_a_kind?(current_hand)
-    numbered_hand = convert_card_values(current_hand)
-    card_values = numbered_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
-    four_of_a_kind = card_values.detect{ |value| card_values.count(value) === 4}
-    four_of_a_kind != nil && !is_a_full_house?(current_hand)
+  def is_a_straight(current_hand)
+    faces = card_faces(current_hand)
+    faces.each_cons(2).all? { |first, second| second === first + 1 }
   end
 
-  def is_three_of_a_kind?(current_hand)
-    numbered_hand = convert_card_values(current_hand)
-    card_values = numbered_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
-    three_of_a_kind = card_values.detect{ |value| card_values.count(value) === 3}
-    three_of_a_kind != nil ? true : false
+  def duplicates(current_hand)
+    @duplicates = []
+    faces = card_faces(current_hand)
+    faces.each do |face_value|
+      @duplicates << faces.count(face_value)
+    end
+    @duplicates.sort.reverse
   end
 
-  def is_a_straight_flush?(current_hand)
-    is_a_straight?(current_hand) && is_a_flush?(current_hand)
+  def split_cards(current_hand)
+    current_hand.split(" ")
   end
 
-  def is_two_of_a_pair?(current_hand)
-    numbered_hand = convert_card_values(current_hand)
-    card_values = numbered_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
-    card_values.uniq.length === 3
+  def card_faces(current_hand)
+    @card_faces = []
+    split_cards(current_hand).each do |card|
+      @card_faces << convert_face_cards(card[0])
+    end
+    return @card_faces.sort
   end
 
-  def is_a_pair?(current_hand)
-    numbered_hand = convert_card_values(current_hand)
-    card_values = numbered_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
-    card_values.uniq.length === 4
+  def card_suites(current_hand)
+    @card_suites = []
+    split_cards(current_hand).each do |card|
+      @card_suites << card[1]
+    end
+    return @card_suites.sort
   end
 
-  def is_a_full_house?(current_hand)
-    numbered_hand = convert_card_values(current_hand)
-    card_values = numbered_hand.map { |card| card.size === 3 ? card[0..1].to_i : card[0].to_i }
-    three_of_a_kind = card_values.detect{ |value| card_values.count(value) === 3}
-    pair = card_values.detect{ |value| card_values.count(value) === 2}
-    pair != nil && three_of_a_kind != nil
+  def highest_card_value(current_hand)
+    card_faces(current_hand).max
   end
 
-  def is_a_royal_flush(current_hand)
-    numbered_hand = convert_card_values(current_hand)
-    if (numbered_hand.max === 14) && (is_a_straight_flush?(current_hand))
-      return true
+  def convert_face_cards(card)
+    if card === "T"
+      card = 10
+    elsif card === "J"
+      card = 11
+    elsif card === "Q"
+      card = 12
+    elsif card === "K"
+      card = 13
+    elsif card === "A"
+      card = 14
     else
-      return false
+      card.to_i
     end
   end
 
-  def convert_card_values(cards)
-    cards.map do |value|
-      if value[0] == 'J'
-        value[0] = '11'
-      elsif value[0] == 'Q'
-        value[0] = '12'
-      elsif value[0] == 'K'
-        value[0] = '13'
-      elsif value[0] == 'A'
-        value[0] = '14'
-      else
-        value
-      end
-    end
-  end
+
 
 end
