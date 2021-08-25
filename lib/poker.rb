@@ -1,3 +1,5 @@
+require_relative './cards.rb'
+require_relative './poker_hand_rank.rb'
 class Poker 
 
   attr_accessor :hand
@@ -14,6 +16,10 @@ class Poker
       check_for_duplicate_card(@deck, @hand, card)
     end
     @current_hand =  @hand.join(",").gsub(/\,/,' ')
+  end
+
+  def result(hand)
+    @hand_rank.rank_hand(hand)
   end
 
   private
