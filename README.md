@@ -19,7 +19,7 @@
 - Check for three of a kind.
 - Check for a pair.
 - Check for a two pair.
-- Checki for a full house.
+- Check for a full house.
 - Check for a royal flush
 - Return the rank of the hand.
 - Randomly draw a 5 card poker hand or input results.
