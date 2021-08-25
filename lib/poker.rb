@@ -12,7 +12,6 @@ class Poker
 
   def draw
     @deck.shuffle!
-    
     while @hand.length < 5 do
       card = @deck.sample
       check_for_duplicate_card(@deck, @hand, card)

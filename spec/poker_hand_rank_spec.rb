@@ -89,13 +89,19 @@ describe PokerHandRank do
   it 'returns a pair' do
     @poker_hand_rank = PokerHandRank.new
     @hand = "6H 6D 7C 8H 9S"
-    expect(@poker_hand_rank.rank_hand(@hand)).to eq("Pair")
+    expect(@poker_hand_rank.rank_hand(@hand)).to eq("One Pair")
   end
 
   it 'returns a royal flush' do
     @poker_hand_rank = PokerHandRank.new
-    @hand = "TH JH QH KH AH"
-    expect(@poker_hand_rank.rank_hand(@hand)).to eq("Royal Flush")
+    @hand = "10H JH QH KH AH"
+    expect(@poker_hand_rank.rank_hand(@hand)).to eq("Royal Flush / Straight Flush")
+  end
+
+  it 'returns an warning for an invalid poker hand' do
+    @poker_hand_rank = PokerHandRank.new
+    @hand = "QC 10C 7C 6C QC"
+    expect(@poker_hand_rank.rank_hand(@hand)).to eq("Invalid Poker Hand")
   end
 
 end

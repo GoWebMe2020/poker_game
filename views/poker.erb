@@ -32,7 +32,7 @@
               name="current_hand"
               id="current_hand"
             />
-            <input class="draw-btn" type="submit" value="Submit" />
+            <input class="draw-btn" type="submit" value="Submit Hand" />
           </form>
         </div>
         <div class="btn-box">
@@ -60,10 +60,11 @@
       </div>
 
       <div class="hand-rank">
-        <% if @poker && @input_hand %>
-        <h1><%= @rank_hand.rank_hand(@input_hand) %></h1>
-        <% elsif @poker && @poker.hand %>
-        <h1><%= p @rank_hand.rank_hand(@poker.current_hand) %></h1>
+        <% if @poker && @input_hand %> <% @rank_hand.rank_hand(@input_hand) %>
+        <h1><%= @rank_hand.result %> - Rank <%= @rank_hand.rank %></h1>
+        <% elsif @poker && @poker.hand %> <%
+        @rank_hand.rank_hand(@poker.current_hand) %>
+        <h1><%= @rank_hand.result %> - Rank <%= @rank_hand.rank %></h1>
         <% end %>
       </div>
     </div>
