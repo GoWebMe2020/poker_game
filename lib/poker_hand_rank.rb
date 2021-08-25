@@ -25,7 +25,7 @@ class PokerHandRank
     else
       @rank = "High Card"
     end
-    p @rank
+    @rank
   end
 
   def is_a_flush(current_hand)

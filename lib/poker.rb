@@ -2,20 +2,22 @@ require_relative './cards.rb'
 require_relative './poker_hand_rank.rb'
 class Poker 
 
-  attr_accessor :hand
+  attr_accessor :hand, :deck, :current_hand
 
   def initialize(cards = Cards.new, hand_rank = PokerHandRank.new)
     @deck = cards.create_deck
+    @hand_rank = hand_rank
+    @hand = []
   end
 
   def draw
     @deck.shuffle!
-    @hand = []
+    
     while @hand.length < 5 do
       card = @deck.sample
       check_for_duplicate_card(@deck, @hand, card)
     end
-    @current_hand =  @hand.join(",").gsub(/\,/,' ')
+    return @current_hand =  @hand.join(",").gsub(/\,/,' ')
   end
 
   def result(hand)

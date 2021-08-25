@@ -28,19 +28,19 @@ describe PokerHandRank do
 
   it 'returns true when it is a straight' do
     @poker_hand_rank = PokerHandRank.new
-    @hand = "TH JH QH KH AH"
+    @hand = "TH JH QC KH AH"
     expect(@poker_hand_rank.is_a_straight(@hand)).to eq(true)
   end
 
   it 'returns 3 for three of a kind of duplicate cards' do
     @poker_hand_rank = PokerHandRank.new
-    @hand = "TH TH TH KH AH"
+    @hand = "TH TH TC KH AC"
     expect(@poker_hand_rank.duplicates(@hand)[0]).to eq(3)
   end
 
   it 'returns 4 for four of a kind of duplicate cards' do
     @poker_hand_rank = PokerHandRank.new
-    @hand = "TH TH TH KH TH"
+    @hand = "TD TC TH KC TS"
     expect(@poker_hand_rank.duplicates(@hand)[0]).to eq(4)
   end
 
